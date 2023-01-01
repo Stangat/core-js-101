@@ -576,8 +576,8 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], (x) => x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.map((item) => childrenSelector(item)).flat();
 }
 
 /**
@@ -592,8 +592,10 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  const depth = indexes.length;
+  const index = indexes[depth - 1];
+  return arr.flat(depth)[index];
 }
 
 /**
@@ -614,8 +616,21 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  let numberOfDigitsToCut;
+  if (arr.length % 2 === 0) {
+    numberOfDigitsToCut = arr.length / 2;
+  } else {
+    numberOfDigitsToCut = (arr.length - 1) / 2;
+  }
+  const head = arr.splice(0, numberOfDigitsToCut);
+  const tail = arr.splice(
+    arr.length - numberOfDigitsToCut,
+    numberOfDigitsToCut,
+  );
+  arr.unshift(tail);
+  arr.push(head);
+  return arr.flat();
 }
 
 module.exports = {
